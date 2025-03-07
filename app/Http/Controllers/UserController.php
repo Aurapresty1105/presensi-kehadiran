@@ -48,12 +48,34 @@ class UserController extends Controller
 
     public function edit($id)
     {
-
+        $user = User::findOrFail($id);
+        return view('menu.user.edit', compact('user'));
     }
 
     public function update(Request $request, $id)
     {
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username,' . $id,
+            'email' => 'required|email|unique:users,email,' . $id,
+            'password' => 'nullable|min:6', // Password opsional
+            'role' => 'required|in:guru,siswa,admin',
+        ]);
 
+        // Cari user berdasarkan ID
+        $user = User::findOrFail($id);
+
+        // Update data user
+        $user->update([
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+            'role' => $request->role,
+            'password' => $request->password ? bcrypt($request->password) : $user->password, // Update password jika diisi
+        ]);
+
+        return redirect()->route('user.view')->with('success', 'User berhasil diperbarui!');
     }
 
     public function destroy($id)
@@ -65,6 +87,7 @@ class UserController extends Controller
         $user->delete();
 
         // Kirim flash message ke session untuk SweetAlert
+        Alert::success('Berhasil', 'Sukses menambahkan data');
         return redirect()->route('user.view')->with('success', 'User berhasil dihapus!');
     }
 

@@ -40,4 +40,6 @@ Route::group(['middleware' => ['auth']], function(){
 Route::get('manaje-user', [UserController::class, 'index'])->name('user.view');
 Route::get('manaje-user/add', [UserController::class, 'add'])->name('user.add');
 Route::post('manaje-user/store', [UserController::class, 'store'])->name('user.store');
-Route::delete('manaje-user/destroy/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+Route::get('manaje-user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+Route::put('manaje-user/update/{id}', [UserController::class, 'update'])->name('user.update');
+Route::get('manaje-user/destroy/{id}', [UserController::class, 'destroy'])->name('user.destroy');
