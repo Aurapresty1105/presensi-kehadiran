@@ -75,7 +75,8 @@ class UserController extends Controller
             'password' => $request->password ? bcrypt($request->password) : $user->password, // Update password jika diisi
         ]);
 
-        return redirect()->route('user.view')->with('success', 'User berhasil diperbarui!');
+        Alert::success('Berhasil', 'Sukses memperbarui data');
+        return redirect()->route('user.view');
     }
 
     public function destroy($id)
@@ -87,8 +88,8 @@ class UserController extends Controller
         $user->delete();
 
         // Kirim flash message ke session untuk SweetAlert
-        Alert::success('Berhasil', 'Sukses menambahkan data');
-        return redirect()->route('user.view')->with('success', 'User berhasil dihapus!');
+        Alert::success('Berhasil', 'Sukses menghapus data');
+        return redirect()->route('user.view');
     }
 
 }

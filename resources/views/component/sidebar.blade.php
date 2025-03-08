@@ -1,7 +1,7 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('home') }}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">Dashboard</span>
             </a>
@@ -21,7 +21,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('kelas.view') }}">
                     <i class="ti-ruler-pencil menu-icon"></i>
                     <span class="menu-title">Kelas</span>
                 </a>
@@ -32,6 +32,7 @@
                     <span class="menu-title">User</span>
                 </a>
             </li>
+
         @endif
         <!-- Guru -->
         @if (Auth::user()->role == 'guru')
