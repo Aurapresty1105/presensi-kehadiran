@@ -9,7 +9,7 @@
         <!-- Admin -->
         @if (Auth::user()->role == 'admin')
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('siswa.view') }}">
                     <i class="ti-id-badge menu-icon"></i>
                     <span class="menu-title">Siswa</span>
                 </a>
