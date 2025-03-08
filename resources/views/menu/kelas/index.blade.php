@@ -1,52 +1,43 @@
 @extends('master')
 @section('content')
-    @include('menu.user.add')
-    @include('menu.user.edit', ['item' => $user])
+    @include('menu.kelas.add')
+    @include('menu.kelas.edit', ['item' => $kelas])
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="d-flex justify-content-end mb-2">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#addUserModal">Tambah User</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#addKelasModal">Tambah Kelas</button>
             </div>
             <div class="card">
                 <div class="card-body">
-                    <p class="card-title mb-0">Manaje User</p>
+                    <p class="card-title mb-0">Manaje Kelas</p>
                     <div class="table-responsive">
                         <table class="table table-striped table-borderless">
                             <thead>
                                 <tr>
-                                    <th>Nama</th>
-                                    <th>Email</th>
-                                    <th>Username</th>
-                                    <th>Role</th>
-                                    <th colspan="2">Aksi</th>
+                                    <th style="width: 30%;">Nama</th>
+                                    <th class="text-center" style="width: 30%;">Angkatan</th>
+                                    <th class="text-right" style="width: 30%;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($user->isEmpty())
+                                @if ($kelas->isEmpty())
                                     <tr>
-                                        <td colspan="5" class="text-center">
-                                            <strong>Tidak ada data user yang tersedia.</strong>
+                                        <td colspan="3" class="text-center">
+                                            <strong>Tidak ada data kelas yang tersedia.</strong>
                                         </td>
                                     </tr>
                                 @else
-                                    @foreach ($user as $item)
+                                    @foreach ($kelas as $item)
                                         <tr>
-                                            <td>{{ $item->name }}</td>
-                                            <td>{{ $item->email }}</td>
-                                            <td>{{ $item->username }}</td>
-                                            <td class="font-weight-medium">
-                                                <div
-                                                    class="badge {{ $item->role == 'guru' ? 'badge-secondary' : ($item->role == 'siswa' ? 'badge-success' : 'badge-secondary') }}">
-                                                    {{ $item->role }}
-                                                </div>
-                                            </td>
-                                            <td>
+                                            <td>{{ $item->nama_kelas }}</td>
+                                            <td class="text-center">{{ $item->angkatan }}</td>
+                                            <td class="text-right">
                                                 <button class="btn btn-danger btn-sm" data-toggle="modal"
                                                     data-target="#deleteModal{{ $item->id }}">
                                                     <i class="ti-trash"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
-                                                    data-target="#editUserModal{{ $item->id }}">
+                                                    data-target="#editKelasModal{{ $item->id }}">
                                                     <i class="ti-pencil"></i>
                                                 </button>
                                             </td>
@@ -56,13 +47,11 @@
                             </tbody>
                         </table>
                     </div>
-
-                    @if ($user->isNotEmpty())
+                    @if ($kelas->isNotEmpty())
                         <div class="d-flex justify-content-end mt-3">
-                            {!! $user->links('pagination::bootstrap-4') !!}
+                            {!! $kelas->links('pagination::bootstrap-4') !!}
                         </div>
                     @endif
-
                 </div>
             </div>
             <div class="modal fade" id="deleteModal{{ $item->id }}" tabindex="-1" role="dialog"
@@ -76,11 +65,11 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>Apakah Anda yakin ingin menghapus user <strong>{{ $item->name }}</strong>?</p>
+                            <p>Apakah Anda yakin ingin menghapus kelas <strong>{{ $item->nama_kelas }}</strong>?</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
-                            <form action="{{ route('user.destroy', $item->id) }}" method="POST">
+                            <form action="{{ route('kelas.destroy', $item->id) }}" method="POST">
                                 @csrf
                                 @method('GET')
                                 <button type="submit" class="btn btn-danger btn-sm">Ya, Hapus</button>
@@ -91,25 +80,4 @@
             </div>
         </div>
     </div>
-@endsection
-@section('script')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function confirmDelete(id) {
-            Swal.fire({
-                title: "Apakah Anda yakin?",
-                text: "Data ini akan dihapus secara permanen!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Ya, Hapus!",
-                cancelButtonText: "Batal"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + id).submit();
-                }
-            });
-        }
-    </script>
 @endsection

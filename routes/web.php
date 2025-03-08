@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -43,3 +44,11 @@ Route::post('manaje-user/store', [UserController::class, 'store'])->name('user.s
 Route::get('manaje-user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
 Route::put('manaje-user/update/{id}', [UserController::class, 'update'])->name('user.update');
 Route::get('manaje-user/destroy/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+
+// Kelas
+Route::get('manaje-kelas', [KelasController::class, 'index'])->name('kelas.view');
+Route::get('manaje-kelas/add', [KelasController::class, 'add'])->name('kelas.add');
+Route::post('manaje-kelas/store', [KelasController::class, 'store'])->name('kelas.store');
+Route::get('manaje-kelas/edit/{id}', [KelasController::class, 'edit'])->name('kelas.edit');
+Route::put('manaje-kelas/update/{id}', [KelasController::class, 'update'])->name('kelas.update');
+Route::get('manaje-kelas/destroy/{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');
