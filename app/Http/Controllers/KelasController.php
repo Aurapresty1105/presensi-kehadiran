@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kelas;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KelasController extends Controller
 {
@@ -32,6 +33,7 @@ class KelasController extends Controller
         ]);
 
         // Redirect dengan SweetAlert sukses
+        Alert::success('Berhasil', 'Sukses menambahkan data');
         return redirect()->route('kelas.view')->with('success', 'Kelas berhasil ditambahkan!');
     }
 
@@ -62,7 +64,21 @@ class KelasController extends Controller
         ]);
 
         // Redirect kembali dengan SweetAlert sukses
-        return redirect()->route('kelas.view')->with('success', 'Data kelas berhasil diperbarui!');
+        Alert::success('Berhasil', 'Sukses memperbarui data');
+        return redirect()->route('kelas.view');
+    }
+
+    public function destroy($id)
+    {
+        // Cari kelas berdasarkan ID
+        $kelas = Kelas::findOrFail($id);
+
+        // Hapus kelas dari database
+        $kelas->delete();
+
+        // Kirim flash message ke session untuk SweetAlert
+        Alert::success('Berhasil', 'Sukses menghapus data');
+        return redirect()->route('kelas.view');
     }
 
 }
