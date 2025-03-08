@@ -15,4 +15,15 @@ class Siswa extends Model
         'nis',
         'jenis_kelamin',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user', 'id');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'id_kelas', 'id');
+    }
+
 }

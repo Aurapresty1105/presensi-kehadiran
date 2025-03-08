@@ -25,16 +25,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::group(['middleware' => ['auth']], function(){
-    Route::group(['middleware' => ['logincheck:admin']], function(){
-        Route::resource('admin', AdminController::class);
-        
+Route::group(['middleware' => ['auth']], function () {
+    Route::group(['middleware' => ['logincheck:admin']], function () {
+        return view('home');
+
     });
-    Route::group(['middleware' => ['logincheck:guru']], function(){
-        Route::resource('guru', GuruController::class);
+    Route::group(['middleware' => ['logincheck:guru']], function () {
+        return view('home');
     });
-    Route::group(['middleware' => ['logincheck:siswa']], function(){
-        Route::resource('siswa', SiswaController::class);
+    Route::group(['middleware' => ['logincheck:siswa']], function () {
+        return view('home');
     });
 });
 // User
@@ -52,3 +52,6 @@ Route::post('manaje-kelas/store', [KelasController::class, 'store'])->name('kela
 Route::get('manaje-kelas/edit/{id}', [KelasController::class, 'edit'])->name('kelas.edit');
 Route::put('manaje-kelas/update/{id}', [KelasController::class, 'update'])->name('kelas.update');
 Route::get('manaje-kelas/destroy/{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');
+
+// Siswa
+Route::get('manaje-siswa', [SiswaController::class, 'index'])->name('siswa.view');
