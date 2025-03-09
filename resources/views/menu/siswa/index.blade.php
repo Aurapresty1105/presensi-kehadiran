@@ -1,6 +1,7 @@
 @extends('master')
 @section('content')
     @include('menu.siswa.add')
+    @include('menu.siswa.edit', ['item' => $siswa])
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="d-flex justify-content-end mb-2">
@@ -38,11 +39,36 @@
                                                     <i class="ti-trash"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
-                                                    data-target="#editUserModal{{ $item->id }}">
+                                                    data-target="#editSiswaModal{{ $item->id }}">
                                                     <i class="ti-pencil"></i>
                                                 </button>
                                             </td>
                                         </tr>
+                                        <!-- modal delete -->
+                                        <div class="modal fade" id="deleteModal{{ $item->id }}" tabindex="-1" role="dialog"
+                                            aria-labelledby="deleteModalLabel{{ $item->id }}" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="deleteModalLabel{{ $item->id }}">Konfirmasi Hapus</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Apakah Anda yakin ingin menghapus siswa <strong>{{ $item->user->name }}</strong>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
+                                                        <form action="{{ route('siswa.destroy', $item->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('GET')
+                                                            <button type="submit" class="btn btn-danger btn-sm">Ya, Hapus</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
                                 @endif
                             </tbody>
@@ -57,7 +83,18 @@
 
                 </div>
             </div>
-
         </div>
     </div>
+@endsection
+@section('script')
+    <script>
+        new TomSelect("#siswaSelect", {
+            create: false,
+            sortField: {
+                field: "text",
+                direction: "asc"
+            }
+        });
+    </script>
+
 @endsection

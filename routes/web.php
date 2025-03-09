@@ -39,19 +39,18 @@ Route::group(['middleware' => ['auth']], function () {
 });
 // User
 Route::get('manaje-user', [UserController::class, 'index'])->name('user.view');
-Route::get('manaje-user/add', [UserController::class, 'add'])->name('user.add');
 Route::post('manaje-user/store', [UserController::class, 'store'])->name('user.store');
-Route::get('manaje-user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
 Route::put('manaje-user/update/{id}', [UserController::class, 'update'])->name('user.update');
 Route::get('manaje-user/destroy/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
 // Kelas
 Route::get('manaje-kelas', [KelasController::class, 'index'])->name('kelas.view');
-Route::get('manaje-kelas/add', [KelasController::class, 'add'])->name('kelas.add');
 Route::post('manaje-kelas/store', [KelasController::class, 'store'])->name('kelas.store');
-Route::get('manaje-kelas/edit/{id}', [KelasController::class, 'edit'])->name('kelas.edit');
 Route::put('manaje-kelas/update/{id}', [KelasController::class, 'update'])->name('kelas.update');
 Route::get('manaje-kelas/destroy/{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');
 
 // Siswa
 Route::get('manaje-siswa', [SiswaController::class, 'index'])->name('siswa.view');
+Route::post('manaje-siswa', [SiswaController::class, 'store'])->name('siswa.store');
+Route::put('manaje-siswa', [SiswaController::class, 'update'])->name('siswa.update');
+Route::get('manaje-siswa/destroy/{id}', [SiswaController::class, 'destroy'])->name('siswa.destroy');

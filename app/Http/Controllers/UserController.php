@@ -15,11 +15,6 @@ class UserController extends Controller
         return view('menu.user.index', compact('user'));
     }
 
-    public function add()
-    {
-        return view('menu.user.add');
-    }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -44,12 +39,6 @@ class UserController extends Controller
 
         // Redirect ke halaman user dengan pesan sukses
         return redirect()->route('user.view')->with('success', 'User berhasil ditambahkan!');
-    }
-
-    public function edit($id)
-    {
-        $user = User::findOrFail($id);
-        return view('menu.user.edit', compact('user'));
     }
 
     public function update(Request $request, $id)

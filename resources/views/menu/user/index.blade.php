@@ -51,6 +51,31 @@
                                                 </button>
                                             </td>
                                         </tr>
+                                        <!-- modal delete -->
+                                        <div class="modal fade" id="deleteModal{{ $item->id }}" tabindex="-1" role="dialog"
+                                            aria-labelledby="deleteModalLabel{{ $item->id }}" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="deleteModalLabel{{ $item->id }}">Konfirmasi Hapus</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Apakah Anda yakin ingin menghapus user <strong>{{ $item->name }}</strong>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
+                                                        <form action="{{ route('user.destroy', $item->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('GET')
+                                                            <button type="submit" class="btn btn-danger btn-sm">Ya, Hapus</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
                                 @endif
                             </tbody>
@@ -63,30 +88,6 @@
                         </div>
                     @endif
 
-                </div>
-            </div>
-            <div class="modal fade" id="deleteModal{{ $item->id }}" tabindex="-1" role="dialog"
-                aria-labelledby="deleteModalLabel{{ $item->id }}" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deleteModalLabel{{ $item->id }}">Konfirmasi Hapus</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Apakah Anda yakin ingin menghapus user <strong>{{ $item->name }}</strong>?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
-                            <form action="{{ route('user.destroy', $item->id) }}" method="POST">
-                                @csrf
-                                @method('GET')
-                                <button type="submit" class="btn btn-danger btn-sm">Ya, Hapus</button>
-                            </form>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
