@@ -13,10 +13,6 @@ class KelasController extends Controller
         $kelas = Kelas::paginate(10);
         return view('menu.kelas.index', compact('kelas'));
     }
-    public function add()
-    {
-        return view('menu.kelas.add');
-    }
 
     public function store(Request $request)
     {
@@ -35,15 +31,6 @@ class KelasController extends Controller
         // Redirect dengan SweetAlert sukses
         Alert::success('Berhasil', 'Sukses menambahkan data');
         return redirect()->route('kelas.view')->with('success', 'Kelas berhasil ditambahkan!');
-    }
-
-    public function edit($id)
-    {
-        // Cari data kelas berdasarkan ID
-        $kelas = Kelas::findOrFail($id);
-
-        // Tampilkan view edit dan kirimkan data kelas
-        return view('menu.kelas.edit', compact('kelas'));
     }
 
     public function update(Request $request, $id)

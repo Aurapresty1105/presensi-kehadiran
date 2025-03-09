@@ -16,13 +16,19 @@
                         <input type="hidden" id="edit_id" name="id">
                         <div class="form-group">
                             <label for="edit_nama_kelas">Nama Kelas</label>
-                            <input type="text" class="form-control" id="edit_nama_kelas" name="nama_kelas" value="{{ $item->nama_kelas }}" required>
+                            <input type="text" class="form-control" id="edit_nama_kelas" name="nama_kelas"
+                                value="{{ $item->nama_kelas }}" required>
                         </div>
                         <div class="form-group">
                             <label for="edit_angkatan">Angkatan</label>
-                            <input type="text" class="form-control" id="edit_angkatan" name="angkatan" value="{{ $item->angkatan }}" required>
+                            <input type="text" class="form-control" id="edit_angkatan" name="angkatan"
+                                value="{{ $item->angkatan }}" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        <!-- Tombol Submit -->
+                        <div class="text-right">
+                            <a href="#" data-dismiss="modal" class="btn btn-light btn-sm">Batal</a>
+                            <button type="submit" class="btn btn-primary btn-sm mr-2">Tambah</button>
+                        </div>
                     </form>
                 </div>
             </div>

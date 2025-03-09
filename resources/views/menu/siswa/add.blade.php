@@ -18,14 +18,14 @@
                         </ul>
                     </div>
                 @endif
-                <form method="POST" action="#" onsubmit="return validateForm()">
+                <form method="POST" action="{{ route('siswa.store') }}" onsubmit="return validateForm()">
                     @csrf
                     <div class="row">
                         <!-- Nama -->
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="role">Siswa</label>
-                                <select class="form-control form-control-sm" name="role" id="role" required>
+                                <label for="id_user">Siswa</label>
+                                <select class="form-control form-control-sm" name="id_user" id="siswaSelect" required>
                                     <option value="">Pilih Siswa</option>
                                     @foreach ($daftarSiswa as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -37,8 +37,8 @@
                         <!-- Kelas -->
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="role">Kelas</label>
-                                <select class="form-control form-control-sm" name="role" id="role" required>
+                                <label for="id_kelas">Kelas</label>
+                                <select class="form-control form-control-sm" name="id_kelas" id="id_kelas" required>
                                     <option value="">Pilih Kelas</option>
                                     @foreach ($kelas as $item)
                                         <option value="{{ $item->id }}">{{ $item->nama_kelas }}</option>
