@@ -15,7 +15,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('kehadiran.view') }}">
                     <i class="ti-clipboard menu-icon"></i>
                     <span class="menu-title">Kehadiran</span>
                 </a>
@@ -46,7 +46,7 @@
         <!-- Siswa -->
         @if (Auth::user()->role == 'siswa')
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('presensi.view') }}">
                     <i class="ti-clipboard menu-icon"></i>
                     <span class="menu-title">Presensi</span>
                 </a>

@@ -38,7 +38,7 @@ class UserController extends Controller
         Alert::success('Berhasil', 'Sukses menambahkan data');
 
         // Redirect ke halaman user dengan pesan sukses
-        return redirect()->route('user.view')->with('success', 'User berhasil ditambahkan!');
+        return redirect()->route('user.view');
     }
 
     public function update(Request $request, $id)

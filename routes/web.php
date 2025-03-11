@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +52,11 @@ Route::get('manaje-kelas/destroy/{id}', [KelasController::class, 'destroy'])->na
 
 // Siswa
 Route::get('manaje-siswa', [SiswaController::class, 'index'])->name('siswa.view');
-Route::post('manaje-siswa', [SiswaController::class, 'store'])->name('siswa.store');
-Route::put('manaje-siswa', [SiswaController::class, 'update'])->name('siswa.update');
+Route::post('manaje-siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
+Route::put('manaje-siswa/update/{id}', [SiswaController::class, 'update'])->name('siswa.update');
 Route::get('manaje-siswa/destroy/{id}', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+
+// Kehadiran
+Route::get('kehadiran-siswa', [PresensiController::class, 'index_kehadiran'])->name('kehadiran.view');
+Route::get('presensi', [PresensiController::class, 'index_presensi'])->name('presensi.view');
+Route::post('presensi/store', [PresensiController::class, 'store'])->name('presensi.store');

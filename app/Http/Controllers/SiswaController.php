@@ -37,7 +37,7 @@ class SiswaController extends Controller
             'jenis_kelamin' => $request->jenis_kelamin,
         ]);
         Alert::success('Berhasil', 'Sukses menambahkan data');
-        return view('menu.siswa.index');
+        return redirect()->route('siswa.view');
     }
 
     public function update(Request $request, $id)
@@ -60,14 +60,15 @@ class SiswaController extends Controller
         ]);
 
         Alert::success('Berhasil', 'Sukses memperbarui data');
-        return view('menu.siswa.index');
+        return redirect()->route('siswa.view');
     }
-    
-    public function destroy($id){
+
+    public function destroy($id)
+    {
         $siswa = Siswa::findOrFail($id);
         $siswa->delete();
         Alert::success('Berhasil', 'Sukses menghapus data');
-        return view('menu.siswa.index');
+        return redirect()->route('siswa.view');
     }
 
 }
