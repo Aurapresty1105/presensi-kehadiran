@@ -62,3 +62,4 @@ Route::get('kehadiran', [PresensiController::class, 'kehadiran'])->name('kehadir
 Route::get('presensi', [PresensiController::class, 'index_presensi'])->name('presensi.view');
 Route::post('presensi/store', [PresensiController::class, 'store'])->name('presensi.store');
 Route::put('/presensi/update-catatan/{id}', [PresensiController::class, 'updateCatatan'])->name('presensi.updateCatatan');
+Route::post('/kehadiran/update-keterangan', [PresensiController::class, 'updateKeterangan'])->name('kehadiran.update');
