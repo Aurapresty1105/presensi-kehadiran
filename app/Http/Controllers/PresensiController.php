@@ -11,10 +11,28 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class PresensiController extends Controller
 {
-    public function index_kehadiran()
+    public function index_kehadiran(Request $request)
     {
-        $presensi = Presensi::all();
-        return view('menu.kehadiran.index', compact('presensi'));
+        $query = Presensi::query();
+
+        // Ambil tanggal hari ini jika tidak ada filter tanggal
+        $tanggalHariIni = date('Y-m-d');
+        $tanggalFilter = $request->filled('tanggal') ? $request->tanggal : $tanggalHariIni;
+
+        // Filter berdasarkan tanggal (default hari ini jika tidak difilter)
+        $query->whereDate('created_at', $tanggalFilter);
+
+        // Filter berdasarkan kelas
+        if ($request->filled('kelas')) {
+            $query->whereHas('siswa', function ($q) use ($request) {
+                $q->where('id_kelas', $request->kelas);
+            });
+        }
+
+        $presensi = $query->latest()->get();
+        $kelas = Kelas::all();
+
+        return view('menu.kehadiran.index', compact('presensi', 'kelas'));
     }
     public function index_presensi()
     {
@@ -116,5 +134,16 @@ class PresensiController extends Controller
         Alert::success('Berhasil', 'Catatan berhasil diperbarui');
         return back();
     }
+
+    public function updateKeterangan(Request $request)
+    {
+        $presensi = Presensi::findOrFail($request->id);
+        $presensi->keterangan_presensi = $request->keterangan_presensi;
+        $presensi->save();
+
+        Alert::success('Berhasil', 'Keterangan berhasil diperbarui');
+        return back();
+    }
+
 
 }
