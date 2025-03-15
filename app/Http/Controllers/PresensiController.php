@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kelas;
 use App\Models\Presensi;
 use App\Models\Siswa;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PresensiController extends Controller
 {
@@ -19,10 +21,31 @@ class PresensiController extends Controller
         $userId = auth()->user()->id; // Sesuaikan dengan sumber ID siswa
         $siswa = Siswa::where('id_user', $userId)->first();
         $siswaId = $siswa->id;
-        $presensi = Presensi::where('id_siswa', $siswaId)->get();
+        $presensi = Presensi::where('id_siswa', $siswaId)->latest()->get();
         return view('menu.presensi.index', compact('presensi'));
     }
 
+    public function kehadiran(Request $request)
+    {
+        $query = Presensi::query();
+
+        // Filter berdasarkan tanggal
+        if ($request->filled('tanggal')) {
+            $query->where('tanggal', $request->tanggal);
+        }
+
+        // Filter berdasarkan kelas
+        if ($request->filled('kelas')) {
+            $query->whereHas('siswa', function ($q) use ($request) {
+                $q->where('id_kelas', $request->kelas);
+            });
+        }
+
+        $presensi = $query->latest()->get();
+        $kelas = Kelas::all();
+
+        return view('menu.kehadiran.index_guru', compact('presensi', 'kelas'));
+    }
     public function store(Request $request)
     {
         $request->validate([
@@ -41,7 +64,8 @@ class PresensiController extends Controller
                 ->first();
 
             if ($cekPresensi) {
-                return back()->with('error', 'Anda sudah melakukan presensi datang hari ini.');
+                Alert::info('Peringatan', 'Anda sudah melakukan presensi datang hari ini');
+                return back();
             }
 
             // Buat presensi baru
@@ -53,7 +77,8 @@ class PresensiController extends Controller
                 'catatan' => $request->catatan ?? null, // Bisa diisi atau dikosongkan
             ]);
 
-            return back()->with('success', 'Presensi datang berhasil ditambahkan.');
+            Alert::success('Berhasil', 'Berhasil melakukan presensi datang');
+            return back();
         } elseif ($request->waktu == 'waktu_pulang') {
             // Update waktu pulang pada presensi yang sudah ada
             $presensi = Presensi::where('id_siswa', $siswaId)
@@ -64,10 +89,32 @@ class PresensiController extends Controller
                 $presensi->update([
                     'waktu_pulang' => Carbon::now()->toTimeString(),
                 ]);
-                return back()->with('success', 'Presensi pulang berhasil diperbarui.');
+
+                Alert::success('Berhasil', 'Berhasil melakukan presensi pulang');
+                return back();
             } else {
-                return back()->with('error', 'Tidak ditemukan presensi datang untuk hari ini.');
+                Alert::info('Peringatan', 'Anda perlu melakukan presensi datang terlebih dahulu');
+                return back();
             }
         }
     }
+
+    public function updateCatatan(Request $request, $id)
+    {
+        $request->validate([
+            'catatan' => 'required|string|max:255',
+        ]);
+
+        // Cari data presensi berdasarkan ID
+        $presensi = Presensi::findOrFail($id);
+
+        // Update catatan
+        $presensi->update([
+            'catatan' => $request->catatan,
+        ]);
+
+        Alert::success('Berhasil', 'Catatan berhasil diperbarui');
+        return back();
+    }
+
 }

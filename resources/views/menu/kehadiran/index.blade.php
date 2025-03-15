@@ -29,23 +29,14 @@
                                 @else
                                     @foreach ($presensi as $item)
                                         <tr>
-                                            <td>{{ $item->siswa->id }}</td>
+                                            <td>{{ $item->siswa->user->name }}</td>
                                             <td>{{ $item->siswa->nis }}</td>
+                                            <td>{{ $item->siswa->kelas->nama_kelas }}</td>
                                             <td>{{ $item->siswa->id }}</td>
                                             <td>{{ $item->siswa->id }}</td>
                                             <td>{{ $item->siswa->id }}</td>
                                             <td>{{ $item->siswa->id }}</td>
                                             <td>{{ $item->catatan }}</td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm" data-toggle="modal"
-                                                    data-target="#deleteModal{{ $item->id }}">
-                                                    <i class="ti-trash"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
-                                                    data-target="#editKelasModal{{ $item->id }}">
-                                                    <i class="ti-pencil"></i>
-                                                </button>
-                                            </td>
                                         </tr>
                                         <!-- modal delete -->
                                         <div class="modal fade" id="deleteModal{{ $item->id }}" tabindex="-1" role="dialog"
@@ -80,11 +71,7 @@
                             </tbody>
                         </table>
                     </div>
-                    @if ($presensi->isNotEmpty())
-                        <div class="d-flex justify-content-end mt-3">
-                            {!! $presensi->links('pagination::bootstrap-4') !!}
-                        </div>
-                    @endif
+                   
                 </div>
             </div>
         </div>

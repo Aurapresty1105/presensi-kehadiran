@@ -58,5 +58,7 @@ Route::get('manaje-siswa/destroy/{id}', [SiswaController::class, 'destroy'])->na
 
 // Kehadiran
 Route::get('kehadiran-siswa', [PresensiController::class, 'index_kehadiran'])->name('kehadiran.view');
+Route::get('kehadiran', [PresensiController::class, 'kehadiran'])->name('kehadiran2.view');
 Route::get('presensi', [PresensiController::class, 'index_presensi'])->name('presensi.view');
 Route::post('presensi/store', [PresensiController::class, 'store'])->name('presensi.store');
+Route::put('/presensi/update-catatan/{id}', [PresensiController::class, 'updateCatatan'])->name('presensi.updateCatatan');
