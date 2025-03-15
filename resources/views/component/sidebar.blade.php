@@ -37,7 +37,7 @@
         <!-- Guru -->
         @if (Auth::user()->role == 'guru')
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('kehadiran2.view') }}">
                     <i class="ti-clipboard menu-icon"></i>
                     <span class="menu-title">Rekap Kehadiran</span>
                 </a>
