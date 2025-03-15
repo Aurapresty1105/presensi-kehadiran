@@ -1,33 +1,35 @@
 @extends('master')
 @section('content')
+@include('menu.kehadiran.add')
     <div class="main-panel">
         <div class="content-wrapper">
-            <form action="{{ route('kehadiran.view') }}" method="GET" class="mb-3">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="tanggal">Tanggal:</label>
-                        <input type="date" class="form-control" name="tanggal" value="{{ request('tanggal') }}">
-                    </div>
-                    <div class="col-md-4">
-                        <label for="kelas">Kelas:</label>
-                        <select name="kelas" class="form-control">
-                            <option value="">-- Semua Kelas --</option>
-                            @foreach($kelas as $k)
-                                <option value="{{ $k->id }}" {{ request('kelas') == $k->id ? 'selected' : '' }}>
-                                    {{ $k->nama_kelas }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-4 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary">Filter</button>
-                        <a href="{{ route('kehadiran.view') }}" class="btn btn-secondary ml-2">Reset</a>
-                    </div>
-                </div>
-            </form>
+            <div class="d-flex justify-content-end mb-2">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#addKehadiranModal">Tambah Kehadiran</button>
+            </div>
             <div class="card">
                 <div class="card-body">
-                    <p class="card-title mb-0">Tabel Kehadiran</p>
+                    <p class="card-title mb-3">Tabel Kehadiran</p>
+                    <form action="{{ route('kehadiran.view') }}" method="GET" class="mb-3">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="date" class="form-control" name="tanggal" value="{{ request('tanggal') }}">
+                            </div>
+                            <div class="col-md-4">
+                                <select name="kelas" class="form-control">
+                                    <option value="">-- Semua Kelas --</option>
+                                    @foreach($kelas as $k)
+                                        <option value="{{ $k->id }}" {{ request('kelas') == $k->id ? 'selected' : '' }}>
+                                            {{ $k->nama_kelas }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                                <a href="{{ route('kehadiran.view') }}" class="btn btn-secondary ml-2">Reset</a>
+                            </div>
+                        </div>
+                    </form>
                     <div class="table-responsive">
                         <table class="table table-striped table-borderless">
                             <thead>
@@ -49,8 +51,11 @@
                                 @else
                                     @foreach ($presensi as $item)
                                         <tr>
-                                            <td>{{ $item->siswa->user->name }} ({{date('H:i', strtotime($item->waktu_datang)) }} -
+                                            <td>{{ $item->siswa->user->name }} 
+                                                @if ($item->keterangan_presensi == 'Hadir')
+                                                ({{date('H:i', strtotime($item->waktu_datang)) }} -
                                                 {{ date('H:i', strtotime($item->waktu_pulang))  }})
+                                                @endif
                                             </td>
                                             <td>{{ $item->siswa->nis }}</td>
                                             <td>{{ $item->siswa->kelas->nama_kelas }}</td>
@@ -62,7 +67,7 @@
                                                     {{ $item->keterangan_presensi == 'Absen' ? 'badge-danger' : '' }}">
                                                     {{ $item->keterangan_presensi }}
                                                 </span>
-                                                <button class="btn btn-sm btn-outline-secondary edit-status" data-id="{{ $item->id }}">
+                                                <button class="btn btn-sm btn-outline-light edit-status" data-id="{{ $item->id }}">
                                                     <i class="ti-pencil"></i>
                                                 </button>
                                                 <select class="form-control form-control-sm change-status d-none" data-id="{{ $item->id }}">

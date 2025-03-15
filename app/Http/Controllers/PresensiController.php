@@ -8,6 +8,7 @@ use App\Models\Siswa;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Models\User;
 
 class PresensiController extends Controller
 {
@@ -31,8 +32,8 @@ class PresensiController extends Controller
 
         $presensi = $query->latest()->get();
         $kelas = Kelas::all();
-
-        return view('menu.kehadiran.index', compact('presensi', 'kelas'));
+        $siswa = Siswa::all();
+        return view('menu.kehadiran.index', compact('presensi', 'kelas', 'siswa'));
     }
     public function index_presensi()
     {
@@ -144,6 +145,25 @@ class PresensiController extends Controller
         Alert::success('Berhasil', 'Keterangan berhasil diperbarui');
         return back();
     }
+    public function store_kehadiran(Request $request)
+    {
+        $request->validate([
+            'id_siswa' => 'required',
+            'keterangan_presensi' => 'required',
+        ]);
+        $tanggalHariIni = Carbon::today()->toDateString();
 
+        // Buat presensi baru
+        Presensi::create([
+            'id_siswa' => $request->id_siswa,
+            'tanggal' => $tanggalHariIni,
+            'waktu_datang' => 'null',
+            'keterangan_presensi' => $request->keterangan_presensi,
+            'catatan' => null, // Bisa diisi atau dikosongkan
+        ]);
+
+        Alert::success('Berhasil', 'Berhasil menambahka data kehadiran');
+        return back();
+    }
 
 }
