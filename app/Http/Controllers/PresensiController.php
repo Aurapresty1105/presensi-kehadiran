@@ -39,6 +39,9 @@ class PresensiController extends Controller
     {
         $userId = auth()->user()->id; // Sesuaikan dengan sumber ID siswa
         $siswa = Siswa::where('id_user', $userId)->first();
+        if (!$siswa) {
+            return view('menu.presensi.index', ['presensi' => null]);
+        }
         $siswaId = $siswa->id;
         $presensi = Presensi::where('id_siswa', $siswaId)->latest()->get();
         return view('menu.presensi.index', compact('presensi'));
