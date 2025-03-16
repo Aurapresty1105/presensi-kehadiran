@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -64,3 +65,6 @@ Route::post('presensi/store', [PresensiController::class, 'store'])->name('prese
 Route::put('/presensi/update-catatan/{id}', [PresensiController::class, 'updateCatatan'])->name('presensi.updateCatatan');
 Route::post('/kehadiran/update-keterangan', [PresensiController::class, 'updateKeterangan'])->name('kehadiran.update');
 Route::post('kehadiran/store', [PresensiController::class, 'store_kehadiran'])->name('kehadiran.store');
+
+// Profil
+Route::get('profil', [ProfilController::class, 'index'])->name('profil.view');

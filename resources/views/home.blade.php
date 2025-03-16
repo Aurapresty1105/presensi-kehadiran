@@ -40,7 +40,7 @@
                         </div>
                     </div>
                 </div>
-                @if (Auth::user()->role == 'admin' || 'guru')
+                @if (in_array(Auth::user()->role, ['admin', 'guru']))
                     <div class="col-md-6 grid-margin transparent">
                         <div class="row">
                             <div class="col-md-6 mb-4 stretch-card transparent">
@@ -121,7 +121,7 @@
                     </div>
                 @endif
             </div>
-            @if (Auth::user()->role == 'admin' || 'guru')
+            @if (in_array(Auth::user()->role, ['admin', 'guru']))
                 <div class="card">
                     <div class="card-body">
                         <p class="card-title mb-0">Tabel Kehadiran</p>
