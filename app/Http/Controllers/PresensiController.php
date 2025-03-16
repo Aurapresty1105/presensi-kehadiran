@@ -130,9 +130,11 @@ class PresensiController extends Controller
         // Cari data presensi berdasarkan ID
         $presensi = Presensi::findOrFail($id);
 
+        // Aktor
+        $aktor = auth()->user()->name;
         // Update catatan
         $presensi->update([
-            'catatan' => $request->catatan,
+            'catatan' => $request->catatan . " (" . $aktor . ")",
         ]);
 
         Alert::success('Berhasil', 'Catatan berhasil diperbarui');

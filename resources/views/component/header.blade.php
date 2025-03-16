@@ -15,9 +15,9 @@
                     <div id="profile-initial" class="profile-circle"></div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                    <a class="dropdown-item">
-                        <i class="ti-settings text-primary"></i>
-                        Settings
+                    <a class="dropdown-item" href="{{ route('profil.view') }}">
+                        <i class="ti-user text-primary"></i>
+                        Profil
                     </a>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                         <i class="ti-power-off text-primary"></i>
