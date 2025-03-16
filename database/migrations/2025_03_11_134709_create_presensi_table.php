@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('catatan')->nullable();
             $table->string('keterangan_presensi');
             $table->date('tanggal');
-            $table->string('waktu_datang');
+            $table->string('waktu_datang')->nullable();
             $table->string('waktu_pulang')->nullable();
             $table->unsignedBigInteger('id_siswa');
             $table->foreign('id_siswa')->references('id')->on('siswa')->onDelete('cascade');

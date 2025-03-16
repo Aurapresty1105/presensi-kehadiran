@@ -2,9 +2,11 @@
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
-            <div class="d-flex justify-content-end mb-2">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#addPresensiModal">Tambah Presensi</button>
-            </div>
+            @if ($presensi != null)
+                <div class="d-flex justify-content-end mb-2">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#addPresensiModal">Tambah Presensi</button>
+                </div>
+            @endif
             <div class="card">
                 <div class="card-body">
                     <p class="card-title mb-0">Tabel Kehadiran</p>
@@ -21,7 +23,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($presensi->isEmpty())
+                                @if ($presensi === null)
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <strong>Anda belum terdaftar sebagai siswa.</strong>
+                                        </td>
+                                    </tr>
+                                @elseif ($presensi->isEmpty())
                                     <tr>
                                         <td colspan="6" class="text-center">
                                             <strong>Tidak ada data kehadiran yang tersedia.</strong>
@@ -42,7 +50,7 @@
                             </tbody>
                         </table>
                     </div>
-                    
+
                 </div>
                 <!-- Modal Tambah Presensi -->
                 <div class="modal fade" id="addPresensiModal" tabindex="-1" role="dialog"

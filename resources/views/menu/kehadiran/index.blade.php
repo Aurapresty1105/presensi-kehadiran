@@ -4,7 +4,7 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="d-flex justify-content-end mb-2">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#addKehadiranModal">Tambah Kehadiran</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#addKehadiranModal">Tambah Data</button>
             </div>
             <div class="card">
                 <div class="card-body">
@@ -52,10 +52,10 @@
                                     @foreach ($presensi as $item)
                                         <tr>
                                             <td>{{ $item->siswa->user->name }} 
-                                                @if ($item->keterangan_presensi == 'Hadir')
-                                                ({{date('H:i', strtotime($item->waktu_datang)) }} -
-                                                {{ date('H:i', strtotime($item->waktu_pulang))  }})
-                                                @endif
+                                            @if ($item->keterangan_presensi == 'Hadir')
+                                                ({{ date('H:i', strtotime($item->waktu_datang)) }} - {{ $item->waktu_pulang ? date('H:i', strtotime($item->waktu_pulang)) : '' }})
+                                            @endif
+
                                             </td>
                                             <td>{{ $item->siswa->nis }}</td>
                                             <td>{{ $item->siswa->kelas->nama_kelas }}</td>
