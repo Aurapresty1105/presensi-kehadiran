@@ -14,6 +14,7 @@ class PresensiController extends Controller
 {
     public function index_kehadiran(Request $request)
     {
+        // Query dasar untuk presensi
         $query = Presensi::query();
 
         // Ambil tanggal hari ini jika tidak ada filter tanggal
@@ -30,9 +31,21 @@ class PresensiController extends Controller
             });
         }
 
+        // Ambil data presensi terbaru
         $presensi = $query->latest()->get();
+
+        // Proses setiap item presensi untuk memecah catatan menjadi array
+        $presensi->each(function ($item) {
+            $item->formatted_catatan = !empty($item->catatan)
+                ? explode("; ", $item->catatan) // Pisahkan berdasarkan "; "
+                : [];
+        });
+
+        // Ambil data tambahan untuk dropdown/filter
         $kelas = Kelas::all();
         $siswa = Siswa::all();
+
+        // Kirim data ke view
         return view('menu.kehadiran.index', compact('presensi', 'kelas', 'siswa'));
     }
     public function index_presensi()
@@ -63,7 +76,7 @@ class PresensiController extends Controller
             });
         }
 
-        $presensi = $query->latest()->get();
+        $presensi = $query->latest()->paginate(25);
         $kelas = Kelas::all();
 
         return view('menu.kehadiran.index_guru', compact('presensi', 'kelas'));
@@ -123,6 +136,7 @@ class PresensiController extends Controller
 
     public function updateCatatan(Request $request, $id)
     {
+        // Validasi input
         $request->validate([
             'catatan' => 'required|string|max:255',
         ]);
@@ -130,13 +144,23 @@ class PresensiController extends Controller
         // Cari data presensi berdasarkan ID
         $presensi = Presensi::findOrFail($id);
 
-        // Aktor
+        // Aktor (pengguna yang sedang login)
         $aktor = auth()->user()->name;
-        // Update catatan
+
+        // Ambil catatan lama dari database
+        $catatanLama = $presensi->catatan ?? ''; // Jika catatan lama kosong, gunakan string kosong
+
+        // Format catatan baru: tambahkan catatan lama jika ada, lalu sambungkan dengan catatan baru
+        $catatanBaru = trim($catatanLama) !== ''
+            ? $catatanLama . "; " . $request->catatan . " (" . $aktor . ")"
+            : $request->catatan . " (" . $aktor . ")";
+
+        // Update catatan di database
         $presensi->update([
-            'catatan' => $request->catatan . " (" . $aktor . ")",
+            'catatan' => $catatanBaru,
         ]);
 
+        // Tampilkan pesan sukses
         Alert::success('Berhasil', 'Catatan berhasil diperbarui');
         return back();
     }

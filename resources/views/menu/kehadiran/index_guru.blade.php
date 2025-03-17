@@ -15,7 +15,7 @@
                             <option value="">-- Semua Kelas --</option>
                             @foreach($kelas as $k)
                                 <option value="{{ $k->id }}" {{ request('kelas') == $k->id ? 'selected' : '' }}>
-                                    {{ $k->nama_kelas }}
+                                    {{ $k->nama_kelas }} ( {{ $k->angkatan }})
                                 </option>
                             @endforeach
                         </select>
@@ -107,6 +107,10 @@
                                 @endif
                             </tbody>
                         </table>
+                        <br>
+                        <div class="d-flex justify-content-end">
+                            {{ $presensi->links('pagination::bootstrap-4') }}
+                        </div>
                     </div>
                 </div>
             </div>

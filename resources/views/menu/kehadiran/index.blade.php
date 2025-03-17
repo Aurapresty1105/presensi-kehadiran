@@ -19,7 +19,7 @@
                                     <option value="">-- Semua Kelas --</option>
                                     @foreach($kelas as $k)
                                         <option value="{{ $k->id }}" {{ request('kelas') == $k->id ? 'selected' : '' }}>
-                                            {{ $k->nama_kelas }}
+                                            {{ $k->nama_kelas }} ( {{ $k->angkatan }})
                                         </option>
                                     @endforeach
                                 </select>
@@ -90,13 +90,14 @@
                                                 @endif
                                             </td>
                                         </tr>
-                                        <!-- modal lihat -->
+                                        <!-- Modal Lihat -->
                                         <div class="modal fade" id="lihatCatatanModal-{{ $item->id }}" tabindex="-1" role="dialog"
                                             aria-labelledby="lihatCatatanModalLabel-{{ $item->id }}" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="lihatCatatanModalLabel-{{ $item->id }}"> {{ $item->siswa->user->name }}
+                                                        <h5 class="modal-title" id="lihatCatatanModalLabel-{{ $item->id }}">
+                                                            {{ $item->siswa->user->name }}
                                                         </h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
@@ -105,12 +106,19 @@
                                                     <div class="modal-body">
                                                         <div class="form-group">
                                                             <label for="catatan">Catatan</label>
-                                                            <textarea class="form-control" name="catatan" disabled>{{ old('catatan', $item->catatan) }}</textarea>
+                                                            <ul style="list-style-type: disc; padding-left: 20px;">
+                                                                @if (!empty($item->formatted_catatan))
+                                                                    @foreach ($item->formatted_catatan as $note)
+                                                                        <li>{{ $note }}</li>
+                                                                    @endforeach
+                                                                @else
+                                                                    <li>Tidak ada catatan.</li>
+                                                                @endif
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Batal</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                                                     </div>
                                                 </div>
                                             </div>
