@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\PresensiController;
@@ -68,3 +69,6 @@ Route::post('kehadiran/store', [PresensiController::class, 'store_kehadiran'])->
 
 // Profil
 Route::get('profil', [ProfilController::class, 'index'])->name('profil.view');
+
+// Export PDF
+Route::get('/cetak-kehadiran-pdf', [ExportController::class, 'exportToPdf'])->name('cetak.pdf');
