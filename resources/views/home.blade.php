@@ -17,6 +17,15 @@
                                 <h6 class="font-weight-normal mb-0">Senang anda telah kembali</h6>
                             @endif
                         </div>
+                        @if (Auth::user()->role == 'admin')
+                            <div class="col-12 col-xl-4">
+                                <div class="justify-content-end d-flex">
+                                    <a href="{{ route('cetak.pdf') }}" class="btn btn-primary">
+                                        <i class="fas fa-download"></i> Cetak Data Kehadiran (PDF)
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -125,6 +134,7 @@
                 <div class="card">
                     <div class="card-body">
                         <p class="card-title mb-0">Tabel Kehadiran</p>
+
                         <div class="table-responsive">
                             <table class="table table-striped table-borderless">
                                 <thead>
