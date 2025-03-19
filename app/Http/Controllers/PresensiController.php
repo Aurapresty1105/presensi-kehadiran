@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kelas;
 use App\Models\Presensi;
 use App\Models\Siswa;
+use App\Models\WhatsappNumber;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -143,6 +144,7 @@ class PresensiController extends Controller
 
         // Cari data presensi berdasarkan ID
         $presensi = Presensi::findOrFail($id);
+        $siswa = $presensi->siswa->user->name;
 
         // Aktor (pengguna yang sedang login)
         $aktor = auth()->user()->name;
@@ -159,6 +161,33 @@ class PresensiController extends Controller
         $presensi->update([
             'catatan' => $catatanBaru,
         ]);
+
+        // Mengirim OTP menggunakan cURL
+        $adminId = User::where('role', 'admin')->first();
+        $whatsapp = WhatsappNumber::where('id_user', $adminId->id)->first();
+        $number = $whatsapp->no_wa;
+        
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.fonnte.com/send',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array(
+                'target' => $number,
+                'message' => 'Ada catatan untuk: ' . $siswa . ' ' . $catatanBaru,
+            ),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: nctHnWs9PbWxxxgDPx4M'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
 
         // Tampilkan pesan sukses
         Alert::success('Berhasil', 'Catatan berhasil diperbarui');

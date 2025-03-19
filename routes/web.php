@@ -69,6 +69,7 @@ Route::post('kehadiran/store', [PresensiController::class, 'store_kehadiran'])->
 
 // Profil
 Route::get('profil', [ProfilController::class, 'index'])->name('profil.view');
+Route::post('profil/wa/store', [ProfilController::class, 'saveOrUpdateWhatsappNumber'])->name('profil.store');
 
 // Export PDF
 Route::get('/cetak-kehadiran-pdf', [ExportController::class, 'exportToPdf'])->name('cetak.pdf');
