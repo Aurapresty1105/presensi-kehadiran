@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('presensi', function (Blueprint $table) {
             $table->id();
-            $table->string('catatan')->nullable();
+            $table->text('catatan')->nullable();
             $table->string('keterangan_presensi');
             $table->date('tanggal');
             $table->string('waktu_datang')->nullable();

@@ -6,16 +6,16 @@
                 <div class="card-body">
                     <p class="card-title mb-0">Profil Pengguna</p>
                     <div id="initial" style="width: 100px;
-                                        height: 100px;
-                                        border-radius: 50%;
-                                        background-color: #007BFF;
-                                        color: white;
-                                        font-size: 32px;
-                                        font-weight: bold;
-                                        display: flex;
-                                        align-items: center;
-                                        justify-content: center;
-                                        margin: 20px auto;"></div>
+                                                                height: 100px;
+                                                                border-radius: 50%;
+                                                                background-color: #007BFF;
+                                                                color: white;
+                                                                font-size: 32px;
+                                                                font-weight: bold;
+                                                                display: flex;
+                                                                align-items: center;
+                                                                justify-content: center;
+                                                                margin: 20px auto;"></div>
                 </div>
                 <div class="card-body">
                     <div class="form-group">
@@ -56,8 +56,34 @@
                                     </div>
                                 </div>
                             </div>
+                            @if (Auth::user()->role == 'admin')
+                                <form action="{{ route('profil.store') }}" method="POST">
+                                    @csrf
+                                    <div class="row"> <!-- Whatsapp -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="whatsapp">Whatsapp</label>
+                                                <input type="text" class="form-control form-control-sm" id="whatsapp" name="whatsapp"
+                                                    value="{{ $wa->no_wa }}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group"> <label for="no_wa">Input Nomor Whatsapp</label>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm" id="no_wa" name="no_wa"
+                                                        placeholder="Masukkan No Whatsapp">
+                                                    <div class="input-group-append">
+                                                        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
                             @endif
-                            @if (Auth::user()->role == 'siswa')
+                        @endif
+                        @if (Auth::user()->role == 'siswa')
                             <div class="row">
                                 <!-- Nama -->
                                 <div class="col-md-6">
@@ -90,9 +116,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="jenis_kelamin">Jenis Kelamin</label>
-                                        <input type="text" class="form-control form-control-sm" id="jenis_kelamin" name="jenis_kelamin"
-                                        value="{{ $siswa->jenis_kelamin == 'L' ? 'Laki-Laki' : 'Perempuan' }}"
-                                        disabled>
+                                        <input type="text" class="form-control form-control-sm" id="jenis_kelamin"
+                                            name="jenis_kelamin"
+                                            value="{{ $siswa->jenis_kelamin == 'L' ? 'Laki-Laki' : 'Perempuan' }}" disabled>
                                     </div>
                                 </div>
                             </div>
