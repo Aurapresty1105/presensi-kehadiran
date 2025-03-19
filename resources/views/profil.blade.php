@@ -6,16 +6,16 @@
                 <div class="card-body">
                     <p class="card-title mb-0">Profil Pengguna</p>
                     <div id="initial" style="width: 100px;
-                                                                height: 100px;
-                                                                border-radius: 50%;
-                                                                background-color: #007BFF;
-                                                                color: white;
-                                                                font-size: 32px;
-                                                                font-weight: bold;
-                                                                display: flex;
-                                                                align-items: center;
-                                                                justify-content: center;
-                                                                margin: 20px auto;"></div>
+                                                                        height: 100px;
+                                                                        border-radius: 50%;
+                                                                        background-color: #007BFF;
+                                                                        color: white;
+                                                                        font-size: 32px;
+                                                                        font-weight: bold;
+                                                                        display: flex;
+                                                                        align-items: center;
+                                                                        justify-content: center;
+                                                                        margin: 20px auto;"></div>
                 </div>
                 <div class="card-body">
                     <div class="form-group">
@@ -63,8 +63,12 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="whatsapp">Whatsapp</label>
-                                                <input type="text" class="form-control form-control-sm" id="whatsapp" name="whatsapp"
-                                                    value="{{ $wa->no_wa }}" disabled>
+                                                @if ($wa == null)
+                                                    <input type="text" class="form-control form-control-sm" id="whatsapp" value="-" disabled>
+                                                @else
+                                                    <input type="text" class="form-control form-control-sm" id="whatsapp"
+                                                        name="whatsapp" value="{{ $wa->no_wa }}" disabled>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="col-md-6">
