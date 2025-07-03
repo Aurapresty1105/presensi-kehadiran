@@ -48,6 +48,8 @@ class LoginController extends Controller
                 return redirect()->intended('guru');
             }elseif ($user->role == 'siswa') {
                 return redirect()->intended('siswa');  
+            }elseif ($user->role == 'kepsek') {
+                return redirect()->intended('kepsek');  
             }
         }
     }
@@ -69,6 +71,8 @@ class LoginController extends Controller
                     return redirect()->intended('guru');           
                 }elseif ($user->role == 'siswa') {
                     return redirect()->intended('siswa');           
+                }elseif ($user->role == 'kepsek') {
+                    return redirect()->intended('kepsek');           
                 }
                 return redirect()->intended('/');
             }

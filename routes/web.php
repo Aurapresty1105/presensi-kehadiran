@@ -40,6 +40,9 @@ Route::middleware(['restrict.ip'])->group(function () {
         Route::group(['middleware' => ['logincheck:siswa']], function () {
             return view('home');
         });
+        Route::group(['middleware' => ['logincheck:kepsek']], function () {
+            return view('home');
+        });
     });
 
     Route::group(['middleware' => ['auth']], function () {

@@ -66,6 +66,7 @@
                             <option value="siswa">Siswa</option>
                             <option value="guru">Guru</option>
                             <option value="admin">Admin</option>
+                            <option value="kepsek">Kepala Sekolah</option>
                         </select>
                     </div>
 
@@ -84,8 +85,8 @@
     <script>
         function validateForm() {
             let role = document.getElementById("role").value;
-            if (role !== "guru" && role !== "siswa" && role !== "admin") {
-                alert("Harap pilih role yang valid (Guru, Siswa, atau Admin)!");
+            if (role !== "guru" && role !== "siswa" && role !== "admin"  && role !== "kepsek") {
+                alert("Harap pilih role yang valid (Guru, Siswa, Admin, atau Kepsek)!");
                 return false;
             }
             return true;

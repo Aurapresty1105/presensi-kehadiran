@@ -3,9 +3,11 @@
 @include('menu.kehadiran.add')
     <div class="main-panel">
         <div class="content-wrapper">
-            <div class="d-flex justify-content-end mb-2">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#addKehadiranModal">Tambah Data</button>
-            </div>
+            @if (Auth::user()->role == 'admin')
+                <div class="d-flex justify-content-end mb-2">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#addKehadiranModal">Tambah Data</button>
+                </div>
+            @endif
             <div class="card">
                 <div class="card-body">
                     <p class="card-title mb-3">Tabel Kehadiran</p>
@@ -67,15 +69,17 @@
                                                     {{ $item->keterangan_presensi == 'Absen' ? 'badge-danger' : '' }}">
                                                     {{ $item->keterangan_presensi }}
                                                 </span>
-                                                <button class="btn btn-sm btn-outline-light edit-status" data-id="{{ $item->id }}">
-                                                    <i class="ti-pencil"></i>
-                                                </button>
-                                                <select class="form-control form-control-sm change-status d-none" data-id="{{ $item->id }}">
-                                                    <option value="Hadir" {{ $item->keterangan_presensi == 'Hadir' ? 'selected' : '' }}>Hadir</option>
-                                                    <option value="Sakit" {{ $item->keterangan_presensi == 'Sakit' ? 'selected' : '' }}>Sakit</option>
-                                                    <option value="Izin" {{ $item->keterangan_presensi == 'Izin' ? 'selected' : '' }}>Izin</option>
-                                                    <option value="Absen" {{ $item->keterangan_presensi == 'Absen' ? 'selected' : '' }}>Absen</option>
-                                                </select>
+                                                @if (Auth::user()->role == 'admin')
+                                                    <button class="btn btn-sm btn-outline-light edit-status" data-id="{{ $item->id }}">
+                                                        <i class="ti-pencil"></i>
+                                                    </button>
+                                                    <select class="form-control form-control-sm change-status d-none" data-id="{{ $item->id }}">
+                                                        <option value="Hadir" {{ $item->keterangan_presensi == 'Hadir' ? 'selected' : '' }}>Hadir</option>
+                                                        <option value="Sakit" {{ $item->keterangan_presensi == 'Sakit' ? 'selected' : '' }}>Sakit</option>
+                                                        <option value="Izin" {{ $item->keterangan_presensi == 'Izin' ? 'selected' : '' }}>Izin</option>
+                                                        <option value="Absen" {{ $item->keterangan_presensi == 'Absen' ? 'selected' : '' }}>Absen</option>
+                                                    </select>
+                                                @endif
                                             </td>
                                             <td>
                                                 <button class="btn btn-outline-primary btn-sm" data-toggle="modal"
