@@ -50,6 +50,7 @@
                                 <option value="siswa" {{ $item->role == 'siswa' ? 'selected' : '' }}>Siswa</option>
                                 <option value="guru" {{ $item->role == 'guru' ? 'selected' : '' }}>Guru</option>
                                 <option value="admin" {{ $item->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                                <option value="kepsek" {{ $item->role == 'kepsek' ? 'selected' : '' }}>Kepala Sekolah</option>
                             </select>
                         </div>
 

@@ -32,7 +32,33 @@
                     <span class="menu-title">User</span>
                 </a>
             </li>
-
+        @endif
+        <!-- Kepsek -->
+        @if (Auth::user()->role == 'kepsek')
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('siswa.view') }}">
+                    <i class="ti-id-badge menu-icon"></i>
+                    <span class="menu-title">Siswa</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('kehadiran.view') }}">
+                    <i class="ti-clipboard menu-icon"></i>
+                    <span class="menu-title">Kehadiran</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('kelas.view') }}">
+                    <i class="ti-ruler-pencil menu-icon"></i>
+                    <span class="menu-title">Kelas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('user.view') }}">
+                    <i class="ti-user menu-icon"></i>
+                    <span class="menu-title">User</span>
+                </a>
+            </li>
         @endif
         <!-- Guru -->
         @if (Auth::user()->role == 'guru')

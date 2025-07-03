@@ -7,7 +7,7 @@
                     <div class="row">
                         <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                             <h3 class="font-weight-bold">Selamat Datang {{ Auth::user()->name}}</h3>
-                            @if (Auth::user()->role == 'admin')
+                            @if (in_array(Auth::user()->role, ['admin', 'kepsek']))
                                 <h6 class="font-weight-normal mb-0">Senang anda telah kembali</h6>
                             @endif
                             @if (Auth::user()->role == 'guru')
@@ -17,7 +17,7 @@
                                 <h6 class="font-weight-normal mb-0">Senang anda telah kembali</h6>
                             @endif
                         </div>
-                        @if (Auth::user()->role == 'admin')
+                        @if (in_array(Auth::user()->role, ['admin', 'kepsek']))
                             <div class="col-12 col-xl-4">
                                 <div class="justify-content-end d-flex">
                                     <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 </div>
-                @if (in_array(Auth::user()->role, ['admin', 'guru']))
+                @if (in_array(Auth::user()->role, ['admin', 'guru', 'kepsek']))
                     <div class="col-md-6 grid-margin transparent">
                         <div class="row">
                             <div class="col-md-6 mb-4 stretch-card transparent">
@@ -132,7 +132,7 @@
                     </div>
                 @endif
             </div>
-            @if (in_array(Auth::user()->role, ['admin', 'guru']))
+            @if (in_array(Auth::user()->role, ['admin', 'guru', 'kepsek']))
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
