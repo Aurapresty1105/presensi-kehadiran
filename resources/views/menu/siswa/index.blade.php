@@ -9,12 +9,13 @@
             </div>
             <div class="card">
                 <div class="card-body">
-                    <p class="card-title mb-0">Manaje Siswa</p>
+                    <p class="card-title mb-0">Manage Siswa</p>
                     <div class="table-responsive">
                         <table class="table table-striped table-borderless">
                             <thead>
                                 <tr>
                                     <th>Nama</th>
+                                    <th>Jenis Kelamin</th>
                                     <th>Kelas</th>
                                     <th>NIS</th>
                                     <th colspan="2">Aksi</th>
@@ -23,7 +24,7 @@
                             <tbody>
                                 @if ($siswa->isEmpty())
                                     <tr>
-                                        <td colspan="5" class="text-center">
+                                        <td colspan="6" class="text-center">
                                             <strong>Tidak ada data siswa yang tersedia.</strong>
                                         </td>
                                     </tr>
@@ -31,6 +32,13 @@
                                     @foreach ($siswa as $item)
                                         <tr>
                                             <td>{{ $item->user->name }}</td>
+                                            <td>
+                                                @if($item->jenis_kelamin === 'P')
+                                                    Perempuan
+                                                @elseif($item->jenis_kelamin === 'L')
+                                                    Laki-laki
+                                                @endif
+                                            </td>
                                             <td>{{ $item->kelas->nama_kelas }}</td>
                                             <td>{{ $item->nis }}</td>
                                             <td>
@@ -50,16 +58,19 @@
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="deleteModalLabel{{ $item->id }}">Konfirmasi Hapus</h5>
+                                                        <h5 class="modal-title" id="deleteModalLabel{{ $item->id }}">Konfirmasi
+                                                            Hapus</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p>Apakah Anda yakin ingin menghapus siswa <strong>{{ $item->user->name }}</strong>?</p>
+                                                        <p>Apakah Anda yakin ingin menghapus siswa
+                                                            <strong>{{ $item->user->name }}</strong>?</p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
+                                                        <button type="button" class="btn btn-secondary btn-sm"
+                                                            data-dismiss="modal">Batal</button>
                                                         <form action="{{ route('siswa.destroy', $item->id) }}" method="POST">
                                                             @csrf
                                                             @method('GET')

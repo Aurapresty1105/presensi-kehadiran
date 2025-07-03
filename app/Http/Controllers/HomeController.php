@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kelas;
 use App\Models\Presensi;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 
 class HomeController extends Controller
 {
@@ -24,21 +27,24 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $today = Carbon::today()->toDateString(); // Ambil tanggal hari ini
+        $today = Carbon::today()->toDateString();
+        $filterAngkatan = $request->get('angkatan');
 
-        // Ambil semua data presensi untuk keperluan admin
         $presensi_hari_ini = Presensi::whereDate('tanggal', $today)->get();
-
-        // Hitung akumulasi presensi hari ini untuk admin
         $ringkasan_hari_ini = $presensi_hari_ini->countBy('keterangan_presensi');
 
-        // Ambil seluruh data presensi dengan relasi siswa dan user (untuk admin)
+        // Ambil semua data presensi dengan relasi
         $akumulasi_presensi = Presensi::with(['siswa.user', 'siswa.kelas'])->get();
 
-        // Kelompokkan data berdasarkan siswa dan hitung total kehadiran
-        $akumulasi = $akumulasi_presensi->groupBy('id_siswa')->map(function ($items) {
+        // Filter berdasarkan angkatan jika diperlukan
+        $filtered_presensi = $akumulasi_presensi->filter(function ($item) use ($filterAngkatan) {
+            return !$filterAngkatan || $item->siswa->kelas->angkatan == $filterAngkatan;
+        });
+
+        // Proses akumulasi per siswa
+        $collection = $filtered_presensi->groupBy('id_siswa')->map(function ($items) {
             return (object) [
                 'siswa' => $items->first()->siswa,
                 'hadir' => $items->where('keterangan_presensi', 'Hadir')->count(),
@@ -46,13 +52,26 @@ class HomeController extends Controller
                 'izin' => $items->where('keterangan_presensi', 'Izin')->count(),
                 'absen' => $items->where('keterangan_presensi', 'Absen')->count(),
             ];
-        });
+        })->values(); // penting untuk pagination
 
-        // Ambil data siswa berdasarkan user yang login (untuk siswa)
-        $userId = auth()->id(); // Lebih singkat daripada auth()->user()->id
+        // Simulasikan pagination manual
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 10;
+        $currentPageItems = $collection->forPage($currentPage, $perPage);
+
+        $akumulasi = new LengthAwarePaginator(
+            $currentPageItems,
+            $collection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+        $angkatanList = Kelas::select('angkatan')->distinct()->orderBy('angkatan', 'desc')->pluck('angkatan');
+
+        $userId = auth()->id();
         $siswa = Siswa::where('id_user', $userId)->first();
 
-        // Jika siswa tidak ditemukan, langsung return view dengan nilai default
         if (!$siswa) {
             return view('home', [
                 'presensi' => null,
@@ -65,13 +84,12 @@ class HomeController extends Controller
                 'akumulasi_sakit' => 0,
                 'akumulasi_izin' => 0,
                 'akumulasi_absen' => 0,
+                'angkatanList' => $angkatanList,
+                'filterAngkatan' => $filterAngkatan,
             ]);
         }
 
-        // Ambil data presensi siswa yang login
         $presensi_siswa = Presensi::where('id_siswa', $siswa->id)->latest()->get();
-
-        // Hitung akumulasi presensi siswa yang login
         $akumulasi_siswa = $presensi_siswa->countBy('keterangan_presensi');
 
         return view('home', [
@@ -85,6 +103,10 @@ class HomeController extends Controller
             'akumulasi_sakit' => $akumulasi_siswa['Sakit'] ?? 0,
             'akumulasi_izin' => $akumulasi_siswa['Izin'] ?? 0,
             'akumulasi_absen' => $akumulasi_siswa['Absen'] ?? 0,
+            'angkatanList' => $angkatanList,
+            'filterAngkatan' => $filterAngkatan,
         ]);
     }
+
+
 }

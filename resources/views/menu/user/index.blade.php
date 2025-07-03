@@ -9,7 +9,7 @@
             </div>
             <div class="card">
                 <div class="card-body">
-                    <p class="card-title mb-0">Manaje User</p>
+                    <p class="card-title mb-0">Manage User</p>
                     <div class="table-responsive">
                         <table class="table table-striped table-borderless">
                             <thead>

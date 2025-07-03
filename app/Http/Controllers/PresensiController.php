@@ -51,14 +51,29 @@ class PresensiController extends Controller
     }
     public function index_presensi()
     {
-        $userId = auth()->user()->id; // Sesuaikan dengan sumber ID siswa
+        $userId = auth()->user()->id;
         $siswa = Siswa::where('id_user', $userId)->first();
+
         if (!$siswa) {
-            return view('menu.presensi.index', ['presensi' => null]);
+            return view('menu.presensi.index', [
+                'siswa' => null,
+                'riwayatPresensi' => collect(), // kirim koleksi kosong
+                'presensiHariIni' => null
+            ]);
         }
+
         $siswaId = $siswa->id;
-        $presensi = Presensi::where('id_siswa', $siswaId)->latest()->get();
-        return view('menu.presensi.index', compact('presensi'));
+
+        $presensiHariIni = Presensi::where('id_siswa', $siswaId)
+            ->whereDate('tanggal', Carbon::today())
+            ->first();
+
+        $riwayatPresensi = Presensi::where('id_siswa', $siswaId)
+            ->whereDate('tanggal', '<', Carbon::today())
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        return view('menu.presensi.index', compact('siswa', 'riwayatPresensi', 'presensiHariIni'));
     }
 
     public function kehadiran(Request $request)
@@ -116,12 +131,18 @@ class PresensiController extends Controller
             Alert::success('Berhasil', 'Berhasil melakukan presensi datang');
             return back();
         } elseif ($request->waktu == 'waktu_pulang') {
-            // Update waktu pulang pada presensi yang sudah ada
             $presensi = Presensi::where('id_siswa', $siswaId)
                 ->where('tanggal', $tanggalHariIni)
                 ->first();
 
             if ($presensi) {
+                // Cek apakah sudah melakukan presensi pulang
+                if ($presensi->waktu_pulang !== null) {
+                    Alert::info('Peringatan', 'Anda sudah melakukan presensi pulang hari ini');
+                    return back();
+                }
+
+                // Kalau belum, baru update waktu pulang
                 $presensi->update([
                     'waktu_pulang' => Carbon::now()->toTimeString(),
                 ]);
@@ -133,6 +154,7 @@ class PresensiController extends Controller
                 return back();
             }
         }
+
     }
 
     public function updateCatatan(Request $request, $id)
@@ -166,7 +188,7 @@ class PresensiController extends Controller
         $adminId = User::where('role', 'admin')->first();
         $whatsapp = WhatsappNumber::where('id_user', $adminId->id)->first();
         $number = $whatsapp->no_wa;
-        
+
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api.fonnte.com/send',
@@ -182,7 +204,7 @@ class PresensiController extends Controller
                 'message' => 'Ada catatan untuk: ' . $siswa . ' ' . $catatanBaru,
             ),
             CURLOPT_HTTPHEADER => array(
-                'Authorization: nctHnWs9PbWxxxgDPx4M'
+                'Authorization: tTjqteKtxf2nNrRzK9Nf'
             ),
         ));
 

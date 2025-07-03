@@ -11,8 +11,12 @@ class UserController extends Controller
 {
     public function index()
     {
-        $user = User::where('role', '!=', 'admin')->paginate(10);
+        $user = User::where('role', '!=', 'admin')
+            ->orderBy('name', 'asc')
+            ->paginate(10);
+
         return view('menu.user.index', compact('user'));
+
     }
 
     public function store(Request $request)

@@ -78,16 +78,10 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                @if ($item->catatan != NULL)
-                                                    <button class="btn btn-outline-primary btn-sm" data-toggle="modal"
+                                                <button class="btn btn-outline-primary btn-sm" data-toggle="modal"
                                                         data-target="#lihatCatatanModal-{{ $item->id }}">
                                                         <i class="ti-eye"></i>
                                                     </button>
-                                                @elseif($item->catatan == NULL)
-                                                    <button class="btn btn-outline-primary btn-sm" disabled>
-                                                        <i class="ti-eye"></i>
-                                                    </button>
-                                                @endif
                                             </td>
                                         </tr>
                                         <!-- Modal Lihat -->
