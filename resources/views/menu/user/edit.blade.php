@@ -37,21 +37,35 @@
                                 <div class="form-group">
                                     <label for="password">Password</label>
                                     <input type="password" class="form-control form-control-sm" name="password">
-                                    <small class="form-text text-muted" style="font-size: 0.75rem;">Kosongkan jika tidak ingin mengubah
+                                    <small class="form-text text-muted" style="font-size: 0.75rem;">Kosongkan jika tidak
+                                        ingin mengubah
                                         password.</small>
                                 </div>
 
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="role">Role</label>
-                            <select class="form-control form-control-sm" name="role" required>
-                                <option value="siswa" {{ $item->role == 'siswa' ? 'selected' : '' }}>Siswa</option>
-                                <option value="guru" {{ $item->role == 'guru' ? 'selected' : '' }}>Guru</option>
-                                <option value="admin" {{ $item->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                                <option value="kepsek" {{ $item->role == 'kepsek' ? 'selected' : '' }}>Kepala Sekolah</option>
-                            </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="role">Role</label>
+                                    <select class="form-control form-control-sm" name="role" required>
+                                        <option value="siswa" {{ $item->role == 'siswa' ? 'selected' : '' }}>Siswa</option>
+                                        <option value="guru" {{ $item->role == 'guru' ? 'selected' : '' }}>Guru</option>
+                                        <option value="admin" {{ $item->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                                        <option value="kepsek" {{ $item->role == 'kepsek' ? 'selected' : '' }}>Kepala Sekolah
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nis">NIS</label>
+                                    <input type="text" class="form-control" id="nis" name="nis" value="{{ $item->nis}}">
+                                    <small>*Hanya untuk role siswa</small>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="text-right">

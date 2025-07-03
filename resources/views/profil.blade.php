@@ -19,7 +19,7 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        @if (in_array(Auth::user()->role, ['admin', 'guru']))
+                        @if (in_array(Auth::user()->role, ['admin', 'guru', 'kepsek']))
                             <div class="row">
                                 <!-- Nama -->
                                 <div class="col-md-6">
@@ -145,9 +145,11 @@
                                 </div>
                             </div>
                         @else
+                           @if (Auth::user()->role == 'siswa' && isset($siswa))
                             <div class="alert alert-warning">
                                 Data siswa belum tersedia. Silakan hubungi admin untuk mendaftar sebagai siswa.
                             </div>
+                           @endif
                         @endif
                     </div>
                 </div>

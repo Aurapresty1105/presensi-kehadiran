@@ -39,15 +39,15 @@
                             <form class="pt-3" method="POST" action="{{ route('login') }}">
                                 @csrf
                                 <div class="form-group">
-                                    <input type="email"
+                                    <input type="text"
                                         class="form-control form-control-lg @error('email') is-invalid @enderror"
-                                        id="email" name="email" placeholder="Email" required>
+                                        id="email" name="email" placeholder="Email atau NIS" required>
+
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
-
                                 </div>
                                 <div class="form-group">
                                     <input type="password"

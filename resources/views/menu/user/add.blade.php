@@ -59,15 +59,28 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="role">Role</label>
-                        <select class="form-control form-control-sm" name="role" id="role" required>
-                            <option value="">Pilih Role</option>
-                            <option value="siswa">Siswa</option>
-                            <option value="guru">Guru</option>
-                            <option value="admin">Admin</option>
-                            <option value="kepsek">Kepala Sekolah</option>
-                        </select>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="role">Role</label>
+                                <select class="form-control form-control-sm" name="role" id="role" required>
+                                    <option value="">Pilih Role</option>
+                                    <option value="siswa">Siswa</option>
+                                    <option value="guru">Guru</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="kepsek">Kepala Sekolah</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nis">NIS</label>
+                                <input type="text" class="form-control" id="nis" name="nis">
+                                <small>*Hanya untuk role siswa</small>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Tombol Submit -->
@@ -85,7 +98,7 @@
     <script>
         function validateForm() {
             let role = document.getElementById("role").value;
-            if (role !== "guru" && role !== "siswa" && role !== "admin"  && role !== "kepsek") {
+            if (role !== "guru" && role !== "siswa" && role !== "admin" && role !== "kepsek") {
                 alert("Harap pilih role yang valid (Guru, Siswa, Admin, atau Kepsek)!");
                 return false;
             }
