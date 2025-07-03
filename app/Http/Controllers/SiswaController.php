@@ -25,15 +25,17 @@ class SiswaController extends Controller
         $request->validate([
             'id_user' => 'required|exists:users,id',
             'id_kelas' => 'required|exists:kelas,id',
-            'nis' => 'required|numeric|unique:siswa,nis',
             'jenis_kelamin' => 'required|in:L,P',
         ]);
+
+        // Cari nis
+        $nis = User::where('id', $request->id_user)->first();
 
         // Simpan data siswa
         Siswa::create([
             'id_user' => $request->id_user,
             'id_kelas' => $request->id_kelas,
-            'nis' => $request->nis,
+            'nis' => $nis->nis,
             'jenis_kelamin' => $request->jenis_kelamin,
         ]);
         Alert::success('Berhasil', 'Sukses menambahkan data');
@@ -46,16 +48,19 @@ class SiswaController extends Controller
         $request->validate([
             'id_user' => 'required|exists:users,id',
             'id_kelas' => 'required|exists:kelas,id',
-            'nis' => 'required|numeric|unique:siswa,nis,' . $id,
             'jenis_kelamin' => 'required|in:L,P',
         ]);
 
         // Temukan siswa dan update data
         $siswa = Siswa::findOrFail($id);
+
+        // Cari nis
+        $nis = User::where('id', $request->id_user)->first();
+
         $siswa->update([
             'id_user' => $request->id_user,
             'id_kelas' => $request->id_kelas,
-            'nis' => $request->nis,
+            'nis' => $nis->nis,
             'jenis_kelamin' => $request->jenis_kelamin,
         ]);
 

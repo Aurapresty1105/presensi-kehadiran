@@ -48,26 +48,15 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <!-- NIS -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="nis">NIS</label>
-                                <input type="text" class="form-control form-control-sm" id="nis" name="nis"
-                                    placeholder="NIS" required>
-                            </div>
-                        </div>
-
-                        <!-- Password -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="password">Jenis Kelamin</label>
-                                <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
-                                    <option value="">Pilih Jenis Kelamin</option>
-                                    <option value="L">Laki-laki</option>
-                                    <option value="P">Perempuan</option>
-                                </select>
-                            </div>
+                    <!-- Password -->
+                    <div>
+                        <div class="form-group">
+                            <label for="password">Jenis Kelamin</label>
+                            <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
+                                <option value="">Pilih Jenis Kelamin</option>
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
                         </div>
                     </div>
                     <!-- Tombol Submit -->

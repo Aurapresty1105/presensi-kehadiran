@@ -4,35 +4,21 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Auth;
-use Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
-     *
-     * @var string
+     * Ke mana user diarahkan setelah login.
+     * Ini tidak dipakai kalau Anda override redirectTo().
      */
     protected $redirectTo = '/home';
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * Constructor.
      */
     public function __construct()
     {
@@ -40,44 +26,27 @@ class LoginController extends Controller
         $this->middleware('auth')->only('logout');
     }
 
-    public function index(){
-        if($user = Auth::user()){
-            if ($user->role == 'admin') {
-                return redirect()->intended('admin');
-            }elseif ($user->role == 'guru') {
-                return redirect()->intended('guru');
-            }elseif ($user->role == 'siswa') {
-                return redirect()->intended('siswa');  
-            }elseif ($user->role == 'kepsek') {
-                return redirect()->intended('kepsek');  
-            }
-        }
+    /**
+     * Override kredensial login untuk menerima email atau NIS.
+     */
+    protected function credentials(Request $request)
+    {
+        $loginInput = $request->input('email'); // dari input <input name="email">
+        $fieldType = filter_var($loginInput, FILTER_VALIDATE_EMAIL) ? 'email' : 'nis';
+
+        return [
+            $fieldType => $loginInput,
+            'password' => $request->input('password'),
+        ];
     }
 
-    public function prosesLogin(Request $request){
-        request()->validate(
-            [
-                'username' => 'required',
-                'password' => 'required',
-            ]
-        );
-        $kredensial = $request->only('username', 'password');
-
-            if (Auth::attempt($kredensial)) {
-                $user = Auth::user();
-                if ($user->role == 'admin') {
-                    return redirect()->intended('admin');
-                }elseif ($user->role == 'guru') {
-                    return redirect()->intended('guru');           
-                }elseif ($user->role == 'siswa') {
-                    return redirect()->intended('siswa');           
-                }elseif ($user->role == 'kepsek') {
-                    return redirect()->intended('kepsek');           
-                }
-                return redirect()->intended('/');
-            }
-        return redirect('login')
-        ->withInput()
-        ->withErrors(['login_gagal' => 'these credentials do not our records']);    
+    /**
+     * Override redirect setelah login berdasarkan role.
+     */
+    protected function redirectTo()
+    {
+        return match (Auth::user()->role) {
+            default => '/home',
+        };
     }
 }

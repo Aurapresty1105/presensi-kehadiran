@@ -36,6 +36,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password), // Hash password
             'role' => $request->role,
+            'nis' => $request->nis,
         ]);
 
         // Alert
@@ -65,6 +66,7 @@ class UserController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'role' => $request->role,
+            'nis' => $request->nis,
             'password' => $request->password ? bcrypt($request->password) : $user->password, // Update password jika diisi
         ]);
 
