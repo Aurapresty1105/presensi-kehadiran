@@ -27,7 +27,7 @@
                         <!-- Tombol Submit -->
                         <div class="text-right">
                             <a href="#" data-dismiss="modal" class="btn btn-light btn-sm">Batal</a>
-                            <button type="submit" class="btn btn-primary btn-sm mr-2">Tambah</button>
+                            <button type="submit" class="btn btn-primary btn-sm mr-2">Ubah</button>
                         </div>
                     </form>
                 </div>

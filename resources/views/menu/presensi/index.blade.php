@@ -2,14 +2,9 @@
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
-            @if ($presensi != null)
-                <div class="d-flex justify-content-end mb-2">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#addPresensiModal">Tambah Presensi</button>
-                </div>
-            @endif
             <div class="card">
                 <div class="card-body">
-                    <p class="card-title mb-0">Tabel Kehadiran</p>
+                    <p class="card-title mb-0">Tabel Presensi</p>
                     <div class="table-responsive">
                         <table class="table table-striped table-borderless">
                             <thead>
@@ -23,64 +18,63 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($presensi === null)
+                                @if ($siswa === null)
                                     <tr>
                                         <td colspan="6" class="text-center">
                                             <strong>Anda belum terdaftar sebagai siswa.</strong>
                                         </td>
                                     </tr>
-                                @elseif ($presensi->isEmpty())
+                                @else
+                                    {{-- Baris Presensi Hari Ini --}}
                                     <tr>
-                                        <td colspan="6" class="text-center">
-                                            <strong>Tidak ada data kehadiran yang tersedia.</strong>
+                                        <td>{{ $siswa->user->name }}</td>
+                                        <td>{{ $siswa->nis }}</td>
+                                        <td>{{ $siswa->kelas->nama_kelas }}</td>
+                                        <td>{{ \Carbon\Carbon::today()->format('Y-m-d') }}</td>
+
+                                        {{-- Kolom Datang --}}
+                                        <td>
+                                            @if (is_null($presensiHariIni))
+                                                <form action="{{ route('presensi.store') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="waktu" value="waktu_datang">
+                                                    <button type="submit" class="btn btn-sm btn-success">Presensi Datang</button>
+                                                </form>
+                                            @else
+                                                {{ $presensiHariIni->waktu_datang ?? '-' }}
+                                            @endif
+                                        </td>
+
+                                        {{-- Kolom Pulang --}}
+                                        <td>
+                                            @if (!is_null($presensiHariIni) && !is_null($presensiHariIni->waktu_datang) && is_null($presensiHariIni->waktu_pulang))
+                                                <form action="{{ route('presensi.store') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="waktu" value="waktu_pulang">
+                                                    <button type="submit" class="btn btn-sm btn-warning">Presensi Pulang</button>
+                                                </form>
+                                            @elseif(!is_null($presensiHariIni))
+                                                {{ $presensiHariIni->waktu_pulang ?? '-' }}
+                                            @else
+                                                -
+                                            @endif
                                         </td>
                                     </tr>
-                                @else
-                                    @foreach ($presensi as $item)
+
+                                    {{-- Riwayat Presensi Sebelumnya --}}
+                                    @foreach ($riwayatPresensi as $item)
                                         <tr>
                                             <td>{{ $item->siswa->user->name }}</td>
                                             <td>{{ $item->siswa->nis }}</td>
                                             <td>{{ $item->siswa->kelas->nama_kelas }}</td>
                                             <td>{{ $item->tanggal }}</td>
-                                            <td>{{ $item->waktu_datang }}</td>
-                                            <td>{{ $item->waktu_pulang }}</td>
+                                            <td>{{ $item->waktu_datang ?? '-' }}</td>
+                                            <td>{{ $item->waktu_pulang ?? '-' }}</td>
                                         </tr>
                                     @endforeach
                                 @endif
                             </tbody>
                         </table>
-                    </div>
-
-                </div>
-                <!-- Modal Tambah Presensi -->
-                <div class="modal fade" id="addPresensiModal" tabindex="-1" role="dialog"
-                    aria-labelledby="addPresensiModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="addPresensiModalLabel">Tambah Presensi</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <form action="{{ route('presensi.store') }}" method="POST">
-                                @csrf
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label for="kelas">Pilih Waktu</label>
-                                        <select class="form-control" name="waktu" id="waktu">
-                                            <option value="">-- Pilih Waktu --</option>
-                                            <option value="waktu_datang">Datang</option>
-                                            <option value="waktu_pulang">Pulang</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                    <button type="submit" class="btn btn-primary">Simpan</button>
-                                </div>
-                            </form>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -20,9 +20,11 @@
                         @if (Auth::user()->role == 'admin')
                             <div class="col-12 col-xl-4">
                                 <div class="justify-content-end d-flex">
-                                    <a href="{{ route('cetak.pdf') }}" class="btn btn-primary">
-                                        <i class="fas fa-download"></i> Cetak Data Kehadiran (PDF)
-                                    </a>
+                                    <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
+                                        data-target="#modalFilterBulan">
+                                        <i class="fas fa-calendar-alt"></i> Cetak Data per Bulan
+                                    </button>
+
                                 </div>
                             </div>
                         @endif
@@ -41,8 +43,8 @@
                                                 class="ti-calendar mr-2"></i></h2>
                                     </div>
                                     <div class="ml-2">
-                                        <h4 id="current-month" class="location font-weight-normal">Bangalore</h4>
-                                        <h6 id="current-year" class="font-weight-normal">India</h6>
+                                        <h4 id="current-month" class="location font-weight-normal"></h4>
+                                        <h6 id="current-year" class="font-weight-normal"></h6>
                                     </div>
                                 </div>
                             </div>
@@ -131,10 +133,28 @@
                 @endif
             </div>
             @if (in_array(Auth::user()->role, ['admin', 'guru']))
-                <div class="card">
+                <div class="card mb-4">
                     <div class="card-body">
-                        <p class="card-title mb-0">Tabel Kehadiran</p>
-
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">Tabel Rekapitulasi Kehadiran</h5>
+                            <form method="GET" action="{{ route('home') }}" class="form-inline">
+                                <div class="form-group mr-2">
+                                    <label for="angkatan" class="mr-2">Angkatan:</label>
+                                    <select name="angkatan" id="angkatan" class="form-control">
+                                        <option value="">-- Semua Angkatan --</option>
+                                        @foreach ($angkatanList as $angkatan)
+                                            <option value="{{ $angkatan }}" {{ $filterAngkatan == $angkatan ? 'selected' : '' }}>
+                                                {{ $angkatan }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary mr-2">Terapkan</button>
+                                @if ($filterAngkatan)
+                                    <a href="{{ route('home') }}" class="btn btn-secondary">Reset</a>
+                                @endif
+                            </form>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-borderless">
                                 <thead>
@@ -170,12 +190,61 @@
                                     @endif
                                 </tbody>
                             </table>
+                            <div class="d-flex justify-content-end mt-3">
+    {{ $akumulasi->links('pagination::bootstrap-4') }}
+</div>
+
                         </div>
                     </div>
                 </div>
             @endif
         </div>
         <!-- main-panel ends -->
+
+        <!-- Modal Filter Bulan untuk Ekspor PDF -->
+        <div class="modal fade" id="modalFilterBulan" tabindex="-1" role="dialog" aria-labelledby="modalFilterBulanLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form action="{{ route('cetak.pdf') }}" method="GET" target="_blank">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalFilterBulanLabel">Pilih Bulan untuk Ekspor PDF</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="bulan">Bulan:</label>
+                                <select name="bulan" id="bulan" class="form-control" required>
+                                    <option value="">-- Pilih Bulan --</option>
+                                    @for ($i = 1; $i <= 12; $i++)
+                                        <option value="{{ $i }}">
+                                            {{ \Carbon\Carbon::create()->month($i)->translatedFormat('F') }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="tahun">Tahun:</label>
+                                <select name="tahun" id="tahun" class="form-control" required>
+                                    @php
+                                        $currentYear = now()->year;
+                                    @endphp
+                                    @for ($year = $currentYear; $year >= $currentYear - 5; $year--)
+                                        <option value="{{ $year }}">{{ $year }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Cetak PDF</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </div>
 @endsection
 @section('script')

@@ -10,7 +10,7 @@ class KelasController extends Controller
 {
     public function index()
     {
-        $kelas = Kelas::paginate(10);
+        $kelas = Kelas::latest()->paginate(10);
         return view('menu.kelas.index', compact('kelas'));
     }
 
@@ -18,7 +18,7 @@ class KelasController extends Controller
     {
         // Validasi input
         $request->validate([
-            'nama_kelas' => 'required|string|max:255|unique:kelas,nama_kelas',
+            'nama_kelas' => 'required|string|max:255',
             'angkatan' => 'required|:',
         ]);
 

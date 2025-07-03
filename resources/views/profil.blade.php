@@ -87,7 +87,7 @@
 
                             @endif
                         @endif
-                        @if (Auth::user()->role == 'siswa')
+                        @if (Auth::user()->role == 'siswa' && isset($siswa))
                             <div class="row">
                                 <!-- Nama -->
                                 <div class="col-md-6">
@@ -143,6 +143,10 @@
                                             value="{{ $siswa->user->email }}" disabled>
                                     </div>
                                 </div>
+                            </div>
+                        @else
+                            <div class="alert alert-warning">
+                                Data siswa belum tersedia. Silakan hubungi admin untuk mendaftar sebagai siswa.
                             </div>
                         @endif
                     </div>
